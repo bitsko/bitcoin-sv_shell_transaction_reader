@@ -22,6 +22,29 @@ echo_blue(){ echo "${bright}${blue}${1}${normal}"; }
 
 echo_red(){ echo "${red}${1}${normal}"; }
 
+deps_checker(){
+	if ! [ -x "$(command -v npm)" ]; then
+		echo_red "install npm"
+		exit 1
+	fi
+	if [ ! -d node_modules/bsv/ ]; then
+		echo_bright "installing BSV js library"
+		npm i --prefix "$(pwd)" bsv --save
+	fi
+	if [ $(npm list bsv | awk NR==2 | tr -dc '0-9' | cut -c 1) -eq "1" ]; then
+		echo_red "bsvjs 1x installed, needs bsvjs 2x"
+		exit 1
+	fi
+	if ! [ -x "$(command -v xxd)" ]; then
+		echo_red "install xxd"
+		exit 1
+	fi
+	if ! [ -x "$(command -v curl)" ]; then
+		echo_red "install curl"
+		exit 1
+	fi
+}
+
 curl_var(){
 	curl -s --location --request GET "${1}"
 }
@@ -163,6 +186,7 @@ else
 fi
 
 program_run(){
+	deps_checker
 	input_check
 	set_array
 	array_parser
