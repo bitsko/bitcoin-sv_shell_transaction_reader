@@ -1,4 +1,6 @@
-# uses whatsonchain api to print information about a transaction to the terminal, colorfully
+# woc_txread.sh
+
+uses whatsonchain api to print information about a transaction to the terminal, colorfully
 
 if bx bitcoin tool is in path; shows the base58check encoded address
 
