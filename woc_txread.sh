@@ -20,6 +20,8 @@ echo_bright(){ echo "${bright}${1}${normal}"; }
 
 echo_blue(){ echo "${bright}${blue}${1}${normal}"; }
 
+echo_green(){ echo "${bright}${green}${1}${normal}"; }
+
 echo_red(){ echo "${red}${1}${normal}"; }
 
 deps_checker(){
@@ -100,8 +102,8 @@ array_parser(){
 	while read f; do
 	        if [[ "$opdup" == 1 ]] && [[ "$ophash160" == 1 ]] && [[ "$line_var" == 3 ]]; then
 	        	if [[ $(command -v bx) ]]; then
-		        p2pkh_address=$(bx base58check-encode "$f")
-	                printf '%s\n' "${bright}pos-$line_var-hex-: ${blue}$f ${normal}${bright}Address: $p2pkh_address${normal}"
+			        p2pkh_address=$(bx base58check-encode "$f")
+		                printf '%s\n' "${bright}pos-$line_var-hex-: ${blue}$f ${normal}${bright}Address: $p2pkh_address${normal}"
 			fi
 	        else
 	                p2pkh_address="${f}"
@@ -158,10 +160,13 @@ print_vouts(){
 	                else
 	                        voutaddress="$line"
 	                fi
-	                echo "${bright}Vout $tx_vout Address: ${green}${voutaddress}${normal}"
+	                echo "${bright}Vout-$tx_vout-Address: ${green}${voutaddress}${normal}"
 	        else
-	                echo_blue "${line}"
+	                echo "${bright}Vout-$tx_vout-Hex    : ${blue}${line}${normal}"
 	        fi
+		if [[ $(xxd -r -p<<<"$line" | strings -n 14) ]]; then
+			echo "${bright}Vout-$tx_vout-text   : ${green}$(xxd -r -p<<<$line | strings)${normal}"
+		fi
 	tx_vout=$((tx_vout + 1 ))
 	done<<<"$vouts"
 }
