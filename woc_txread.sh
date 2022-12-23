@@ -134,7 +134,9 @@ array_parser(){
 	                        print_txtype "B part transaction"
 	                elif [[ "$text" == 15DHFxWZJT58f9nhyGnsRBqrgwK4W6h4Up ]]; then
 	                        print_txtype "BCat transaction"
-	                else
+	                elif [[ "$text" == 1LtyME6b5AnMopQrBPLk4FGN8UBuhxKqrn ]]; then
+                                print_txtype "Weather SV"
+			else
 	                        if [[ $(wc -m<<<"$text") -gt 2 ]]; then
 	                                printf '%s\n' "${white}pos-$line_var-${bright}text: ${green}$text${normal}"
 	                        fi
